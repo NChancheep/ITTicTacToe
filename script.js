@@ -53,9 +53,9 @@ function checkWinner(board, player) {
 function minimax(newBoard, player) {
     const availSpots = newBoard.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
 
-    if (checkWinner(newBoard, human)) return {score: -10};
-    if (checkWinner(newBoard, ai)) return {score: 10};
-    if (availSpots.length === 0) return {score: 0};
+    if (checkWinner(newBoard, human)) return { score: -10 };
+    if (checkWinner(newBoard, ai)) return { score: 10 };
+    if (availSpots.length === 0) return { score: 0 };
 
     let moves = [];
 
@@ -69,7 +69,10 @@ function minimax(newBoard, player) {
             move.score = result.score;
         } else {
             let result = minimax(newBoard, ai);
-           Board[availSpots[i]] = "";
+            move.score = result.score;
+        }
+
+        newBoard[availSpots[i]] = "";
         moves.push(move);
     }
 
@@ -84,7 +87,10 @@ function minimax(newBoard, player) {
         }
     } else {
         let bestScore = Infinity;
-        for (                bestMove = i;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
             }
         }
     }
@@ -93,7 +99,7 @@ function minimax(newBoard, player) {
 }
 
 function restartGame() {
-    board = ["", "", "", "", "", "", "", "", ""];
+    = ["", "", "", "", "", "", "", "", ""];
     currentPlayer = human;
     cells.forEach(cell => cell.textContent = "");
     if (round < 3) {
